@@ -97,6 +97,7 @@ extension HTTPError: Equatable {
         case (.decodingError, .decodingError): return true
         case let (.urlError(rhsError), .urlError(lhsError)): return rhsError == lhsError
         case (.invalidURL, .invalidURL): return true
+        case (.invalidImageData, .invalidImageData): return true
         case (.unknowError, .unknowError): return true
         default: return false
         }

@@ -9,12 +9,13 @@ import Foundation
 
 /// Implementa um padrão ao `URLSession` para facilitar a manipulação dos testes de requisições HTTP.
 protocol URLSessionProtocol {
-    func dataTask(with url: URL,
+    func dataTask(with url: URLRequest,
                   completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
 }
 
 extension URLSession: URLSessionProtocol {
-    func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol   {
+    func dataTask(with url: URLRequest,
+                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol   {
         return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
     }
 }

@@ -22,3 +22,11 @@ struct Ability: Identifiable, Codable {
         }
     }
 }
+
+extension Ability: RealmConvertible {
+    typealias RealmType = RealmAbility
+    
+    func asRealmObject() -> RealmAbility {
+        RealmAbility(id: id, name: name, effects: effects.toList())
+    }
+}

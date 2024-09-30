@@ -26,3 +26,16 @@ struct Specie: Identifiable, Codable {
         var name: String
     }
 }
+
+extension Specie: RealmConvertible {
+    typealias RealmType = RealmSpecie
+    
+    func asRealmObject() -> RealmSpecie {
+        RealmSpecie(id: id, 
+                    name: name,
+                    colorName: color.name,
+                    isBaby: isBaby,
+                    isLegendary: isLegendary,
+                    isMythical: isMythical)
+    }
+}

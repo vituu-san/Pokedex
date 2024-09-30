@@ -10,11 +10,16 @@ import Foundation
 /// Retorna uma URL de acordo com os endpoints mapeados.
 enum APIEndpoint {
     case pokemons
-    case pokemon(name: String)
-    case specie(name: String)
-    case ability(name: String)
-    case move(name: String)
+    case pokemon(String? = nil)
+    case specie(String? = nil)
+    case ability(String? = nil)
+    case move(String? = nil)
+    case kind(String? = nil)
     case custom(urlString: String)
+    
+    enum HTTPMethod: String {
+        case get = "GET"
+    }
     
     var url: URL? {
         switch self {
@@ -28,11 +33,18 @@ enum APIEndpoint {
     var path: String {
         switch self {
         case .pokemons: return "pokemon/"
-        case .pokemon(let name): return "pokemon/\(name)"
-        case .specie(let name): return "specie/\(name)"
-        case .ability(let name): return "ability/\(name)"
-        case .move(let name): return "move/\(name)"
+        case .pokemon(let name): return "pokemon/\(name ?? "")"
+        case .specie(let name): return "specie/\(name ?? "")"
+        case .ability(let name): return "ability/\(name ?? "")"
+        case .move(let name): return "move/\(name ?? "")"
+        case .kind(let name): return "type/\(name ?? "")"
         default: return ""
+        }
+    }
+    
+    var method: HTTPMethod {
+        switch self {
+        default: .get
         }
     }
 }

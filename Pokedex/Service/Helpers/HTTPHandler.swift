@@ -14,6 +14,7 @@ enum HTTPError: LocalizedError {
     case decodingError(Error)
     case urlError(URLError)
     case invalidURL
+    case invalidImageData
     case unknowError
     
     var errorDescription: String? {
@@ -26,6 +27,7 @@ enum HTTPError: LocalizedError {
         case .decodingError(let error): return "Can't decode error. Description: \(error.localizedDescription)"
         case .urlError(let error): return "Can't handle URL. Description: \(error.localizedDescription)"
         case .invalidURL: return "Invalid URL."
+        case .invalidImageData: return "The data isn't an image or can be broken."
         case .unknowError: return "Has occurred an unknow error."
         }
     }

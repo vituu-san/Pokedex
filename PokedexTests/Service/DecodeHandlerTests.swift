@@ -22,23 +22,14 @@ final class DecodeHandlerTests: XCTestCase {
 
     func testSuccess_ShouldReturnObject() {
         let data = JSONHandler().loadJsonData(file: "Pokemon")!
-        let result = sut.handle(Pokemon.self, from: data)
-        switch result {
-        case .success(let pokemon):
-            XCTAssertEqual(pokemon.id, 35)
-        case .failure:
-            XCTFail("Unexpected error!")
-        }
+        let pokemon = sut.handle(Pokemon.self, from: data)
+        XCTAssertNotNil(pokemon)
+        XCTAssertEqual(pokemon?.id, 35)
     }
     
-    func testFailure_ShouldReturnError() {
+    func testFailure_ShouldBeNil() {
         let data = JSONHandler().loadJsonData(file: "Pokemon")!
-        let result = sut.handle(Ability.self, from: data)
-        switch result {
-        case .success:
-            XCTFail("Unexpected data!")
-        case .failure(let error):
-            XCTAssertEqual(error, .decodingError(NSError()))
-        }
+        let ability = sut.handle(Ability.self, from: data)
+        XCTAssertNil(ability)
     }
 }

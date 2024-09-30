@@ -23,3 +23,11 @@ struct Move: Identifiable, Codable {
         var name: String
     }
 }
+
+extension Move: RealmConvertible {
+    typealias RealmType = RealmMove
+    
+    func asRealmObject() -> RealmMove {
+        RealmMove(id: id, name: name, accuracy: accuracy, power: power, damageClass: damageClass.name)
+    }
+}
