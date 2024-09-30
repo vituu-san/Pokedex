@@ -1,0 +1,59 @@
+{
+    "abilities": [
+        {
+            "ability": {
+                "name": "cute-charm",
+                "url": "https://pokeapi.co/api/v2/ability/56/"
+            },
+            "is_hidden": false,
+            "slot": 1
+        }
+    ],
+    "base_experience": 113,
+    "height": 6,
+    "id": 35,
+    "is_default": true,
+    "moves": [
+        {
+            "move": {
+                "name": "pound",
+                "url": "https://pokeapi.co/api/v2/move/1/"
+            }
+        }
+    ],
+    "name": "clefairy",
+    "species": {
+        "name": "clefairy",
+        "url": "https://pokeapi.co/api/v2/pokemon-species/35/"
+    },
+    "sprites": {
+        "back_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/35.png",
+        "back_female": null,
+        "back_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/35.png",
+        "back_shiny_female": null,
+        "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/35.png",
+        "front_female": null,
+        "front_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/35.png",
+        "front_shiny_female": null,
+    },
+    "stats": [
+        {
+            "base_stat": 70,
+            "effort": 2,
+            "stat": {
+                "name": "hp",
+                "url": "https://pokeapi.co/api/v2/stat/1/"
+            }
+        },
+    ],
+    "types": [
+        {
+            "slot": 1,
+            "type": {
+                "name": "fairy",
+                "url": "https://pokeapi.co/api/v2/type/18/"
+            }
+        }
+    ],
+    "weight": 75
+}
