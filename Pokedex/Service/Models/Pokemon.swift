@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pokemon: Identifiable, Codable {
+struct Pokemon: Hashable, Codable {
     var id: Int
     var name: String
     var height: Int
@@ -19,11 +19,11 @@ struct Pokemon: Identifiable, Codable {
     var stats: [Stat]
     var types: [PokemonType]
     
-    struct Specie: Codable {
+    struct Specie: Hashable, Codable {
         var name: String
     }
     
-    struct Ability: Codable {
+    struct Ability: Hashable, Codable {
         var isHidden: Bool?
         var value: Item
         
@@ -33,7 +33,7 @@ struct Pokemon: Identifiable, Codable {
         }
     }
     
-    struct Move: Codable {
+    struct Move: Hashable, Codable {
         var value: Item
         
         enum CodingKeys: String, CodingKey {
@@ -41,7 +41,7 @@ struct Pokemon: Identifiable, Codable {
         }
     }
 
-    struct Sprites: Codable {
+    struct Sprites: Hashable, Codable {
         var front: String
         var frontShiny: String
         
@@ -51,7 +51,7 @@ struct Pokemon: Identifiable, Codable {
         }
     }
 
-    struct Stat: Codable {
+    struct Stat: Hashable, Codable {
         var base: Int
         var value: Item
         
@@ -61,7 +61,7 @@ struct Pokemon: Identifiable, Codable {
         }
     }
     
-    struct PokemonType: Codable {
+    struct PokemonType: Hashable, Codable {
         var type: Item
     }
 }

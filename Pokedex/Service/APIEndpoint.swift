@@ -34,7 +34,7 @@ enum APIEndpoint {
         switch self {
         case .pokemons: return "pokemon/"
         case .pokemon(let name): return "pokemon/\(name ?? "")"
-        case .specie(let name): return "specie/\(name ?? "")"
+        case .specie(let name): return "pokemon-species/\(name ?? "")"
         case .ability(let name): return "ability/\(name ?? "")"
         case .move(let name): return "move/\(name ?? "")"
         case .kind(let name): return "type/\(name ?? "")"

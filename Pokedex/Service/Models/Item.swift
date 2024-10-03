@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Items: Codable {
+struct Items: Hashable, Codable {
     var count: Int
     var results: [Item]
 }
 
-struct Item: Codable {
+struct Item: Hashable, Codable {
     var name: String
     var urlString: String
     
