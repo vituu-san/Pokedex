@@ -11,7 +11,17 @@ import SwiftUI
 struct PokedexApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let networkService = NetworkService()
+            let realmService = RealmService()
+            let multiRequestService = MultiRequestService()
+            let networkRepository = NetworkRepository(networkServicing: networkService,
+                                                      multiRequestServicing: multiRequestService)
+            let repository = HomeRepository(networkService: networkService,
+                                            realmService: realmService,
+                                            multiRequestService: multiRequestService,
+                                            networkRepository: networkRepository)
+            let controller = HomeController(repository: repository)
+            HomeView(controller: controller)
         }
     }
 }
