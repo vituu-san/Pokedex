@@ -51,20 +51,19 @@ struct HomeView<Controlling>: View where Controlling: HomeControlling {
                             
                             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                                 ForEach(filteredItems, id: \.self) { item in
-                                    let networkService = NetworkService()
-                                    let cardRepository = CardRepository(networkService: networkService)
-                                    let controller = CardController(urlImage: item.sprites.front,
-                                                                    specie: item.species.name,
-                                                                    name: item.name,
-                                                                    number: item.id,
-                                                                    repository: cardRepository)
-                                    
-                                    
-                                    let detailController = DetailController(name: item.name, 
-                                                                            
+                                    let imageDownloader = ImageDownloader()
+                                    let detailController = DetailController(name: item.name,
                                                                             urlString: item.sprites.front,
-                                                                            stats: item.stats)
+                                                                            stats: item.stats, 
+                                                                            imageDownloader: imageDownloader)
                                     NavigationLink(destination: DetailView(controller: detailController)) {
+                                        let networkService = NetworkService()
+                                        let cardRepository = CardRepository(networkService: networkService)
+                                        let controller = CardController(urlImage: item.sprites.front,
+                                                                        specie: item.species.name,
+                                                                        name: item.name,
+                                                                        number: item.id,
+                                                                        repository: cardRepository)
                                         CardView(controller: controller)
                                     }
                                 }
@@ -76,7 +75,7 @@ struct HomeView<Controlling>: View where Controlling: HomeControlling {
             }
             .onAppear {
                 if !hasAppearedOnce {
-                    controller.fetchPokemonsList(at: 9)
+                    controller.fetchPokemonsList(by: 9)
                     hasAppearedOnce = true
                 }
             }

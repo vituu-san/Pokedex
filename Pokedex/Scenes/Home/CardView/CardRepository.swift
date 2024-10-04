@@ -13,12 +13,16 @@ protocol CardRepositoring: CardRepository {
 }
 
 final class CardRepository: CardRepositoring {
-    private var imageDownloader = ImageDownloader()
     private var networkService: NetworkServicing
+    private var imageDownloader: ImageDownloading
+    private var decodeHandler: DecodeHandling
     
-    init(imageDownloader: ImageDownloader = ImageDownloader(), networkService: NetworkServicing) {
-        self.imageDownloader = imageDownloader
+    init(networkService: NetworkServicing = NetworkService(),
+         imageDownloader: ImageDownloading = ImageDownloader(),
+         decodeHandler: DecodeHandling = DecodeHandler()) {
         self.networkService = networkService
+        self.imageDownloader = imageDownloader
+        self.decodeHandler = decodeHandler
     }
     
     func fetchImage(with urlString: String, completion: @escaping (Result<UIImage, HTTPError>) -> Void) {
@@ -33,12 +37,12 @@ final class CardRepository: CardRepositoring {
     }
     
     func fetchSpecie(with name: String, completion: @escaping (Result<Specie, HTTPError>) -> Void) {
-        networkService.fetch(type: Specie.self,
-                             endpoint: .specie(name), 
-                             parameters: nil) { result in
+        networkService.fetch(endpoint: .specie(name), parameters: nil) { [weak self] result in
             switch result {
-            case .success(let specie):
-                completion(.success(specie))
+            case .success(let data):
+                if let specie = self?.decodeHandler.handle(Specie.self, from: data) {
+                    completion(.success(specie))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }

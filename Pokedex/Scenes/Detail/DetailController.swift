@@ -20,16 +20,16 @@ final class DetailController: DetailControlling {
 
     @Published var image: UIImage = UIImage()
 
-    private var imageDownloader: ImageDownloading = ImageDownloader()
+    private var imageDownloader: ImageDownloading
     
-    init(imageDownloader: ImageDownloading = ImageDownloader(),
-         name: String,
+    init(name: String,
          urlString: String,
-         stats: [Pokemon.Stat]) {
+         stats: [Pokemon.Stat],
+         imageDownloader: ImageDownloading = ImageDownloader()) {
         self.name = name
-        self.imageDownloader = imageDownloader
         self.urlString = urlString
         self.stats = stats
+        self.imageDownloader = imageDownloader
     }
     
     func fetchImage() {

@@ -21,6 +21,7 @@ class RealmService: RealmServicing {
     init(config: Realm.Configuration = .defaultConfiguration) {
         do {
             self.realm = try Realm(configuration: config)
+            print(realm.configuration.fileURL!)
         } catch let error {
             fatalError("Failed to initialize Realm: \(error)")
         }
