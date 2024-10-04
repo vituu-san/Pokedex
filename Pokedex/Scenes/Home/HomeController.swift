@@ -10,7 +10,7 @@ import Foundation
 protocol HomeControlling: ObservableObject {
     var isLoading: Bool { get }
     var pokemons: [Pokemon] { get }
-    func fetchPokemonsList(at page: Int)
+    func fetchPokemonsList(by pageID: Int)
     func search(keyword: String)
 }
 
@@ -24,26 +24,42 @@ final class HomeController: HomeControlling {
         self.repository = repository
     }
     
-    func fetchPokemonsList(at page: Int) {
+    func fetchPokemonsList(by pageID: Int) {
         isLoading = true
-        repository.fetch(page: page) { [weak self] result in
+        repository.fetchPage(by: pageID) { [weak self] result in
             self?.isLoading = false
             switch result {
             case .success(let page):
                 self?.pokemons.append(contentsOf: page.pokemons)
             case .failure(let error):
-                // TODO: Criar método de gerencia de estados para a view.
+                // TODO: Criar gerenciamento de estado: Error.
                 debugPrint("Failure when fetching Pokemons. Description: \(error)")
             }
         }
     }
     
     func search(keyword: String) {
-        repository.fetch(keyword: keyword) { [weak self] kind, pokemon in
-            if let kind {
-                // TODO: Buscar toda a lista de Pokemons no Kind, baixar os dados de cada um e popular a lista `pokemons`.
-            } else if let pokemon {
-                self?.pokemons.append(pokemon)
+        repository.fetchForSearch(by: keyword) { [weak self] result in
+            switch result {
+            case .success(let object):
+                switch object {
+                case .pokemon(let pokemon):
+                    self?.pokemons.append(pokemon)
+                case .kind(let kind):
+                    let urls = kind.pokemons.map({ URL(string: $0.pokemon.urlString) })
+                    if let pokemons: [Pokemon] = self?.repository.fetchObjects(by: urls) {
+                        self?.pokemons.append(contentsOf: pokemons)
+                    } else {
+                        // TODO: Criar gerenciamento de estado: Empty.
+                    }
+                default:
+                    // TODO: Criar gerenciamento de estado: Error.
+                    debugPrint("Failure on fetchForSearch at \(HomeController.self). Description: unkow error")
+                }
+                
+            case .failure(let error):
+                // TODO: Estado de erro.
+                debugPrint("Failure on fetchForSearch at \(HomeController.self). Description: \(error)")
             }
         }
     }

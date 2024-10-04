@@ -17,10 +17,12 @@ final class ImageDownloader: ImageDownloading {
     var session: URLSessionProtocol
     
     private let cache = NSCache<NSString, UIImage>()
-    private let httpHandler = HTTPHandler()
+    private let networkService: NetworkServicing
     
-    init(session: URLSessionProtocol = URLSession.shared) {
+    init(session: URLSessionProtocol = URLSession.shared, 
+         networkService: NetworkServicing = NetworkService()) {
         self.session = session
+        self.networkService = networkService
     }
     
     func cache(image: UIImage, with key: String) {
@@ -32,20 +34,8 @@ final class ImageDownloader: ImageDownloading {
             completion(.success(cachedImage))
             return
         }
-        
-        guard let url = URL(string: urlString) else {
-            completion(.failure(.invalidURL))
-            return
-        }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        let task = session.dataTask(with: urlRequest) { [weak self] data, response, error in
-            guard let result = self?.httpHandler.handle(data: data, response: response, error: error) else {
-                completion(.failure(.unknowError))
-                return
-            }
-            
+
+        networkService.fetch(endpoint: .custom(URL(string: urlString)), parameters: nil) { [weak self] result in
             switch result {
             case .success(let imageData):
                 if let image = UIImage(data: imageData) {
@@ -58,7 +48,5 @@ final class ImageDownloader: ImageDownloading {
                 completion(.failure(error))
             }
         }
-        
-        task.resume()
     }
 }

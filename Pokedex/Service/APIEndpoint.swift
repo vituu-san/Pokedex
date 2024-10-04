@@ -15,7 +15,7 @@ enum APIEndpoint {
     case ability(String? = nil)
     case move(String? = nil)
     case kind(String? = nil)
-    case custom(urlString: String)
+    case custom(URL?)
     
     enum HTTPMethod: String {
         case get = "GET"
@@ -23,7 +23,7 @@ enum APIEndpoint {
     
     var url: URL? {
         switch self {
-        case let .custom(urlString): return URL(string: urlString)
+        case let .custom(url): return url
         default: return URL(string: baseURLString + path)
         }
     }

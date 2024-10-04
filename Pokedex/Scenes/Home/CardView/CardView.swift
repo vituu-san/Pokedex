@@ -42,15 +42,7 @@ struct CardView<Controlling>: View where Controlling: CardControlling {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        let networkService = NetworkService()
-        let realmService = RealmService()
-        let multiRequestService = MultiRequestService()
-        let networkRepository = NetworkRepository(networkServicing: networkService,
-                                                  multiRequestServicing: multiRequestService)
-        let repository = HomeRepository(networkService: networkService,
-                                        realmService: realmService,
-                                        multiRequestService: multiRequestService, 
-                                        networkRepository: networkRepository)
+        let repository = HomeRepository()
         let controller = HomeController(repository: repository)
         HomeView(controller: controller)
     }

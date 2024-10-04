@@ -33,25 +33,32 @@ enum HTTPError: LocalizedError {
     }
 }
 
+protocol HTTPHandling {
+    func handle(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, HTTPError>) -> Void)
+}
+
 /// Responsável por lidar com o resultado de uma requisição HTTP.
-final class HTTPHandler {
-    func handle(data: Data?, response: URLResponse?, error: Error?) -> Result<Data, HTTPError> {
+final class HTTPHandler: HTTPHandling {
+    func handle(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, HTTPError>) -> Void) {
         if let error = error as? URLError {
-            return .failure(.urlError(error))
+            completion(.failure(.urlError(error)))
         }
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            return .failure(.invalidResponse)
+            completion(.failure(.invalidResponse))
+            return
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
-            return .failure(.badRequest(httpResponse.statusCode))
+            completion(.failure(.badRequest(httpResponse.statusCode)))
+            return
         }
         
         guard let data else {
-            return .failure(.unknowError)
+            completion(.failure(.unknowError))
+            return
         }
         
-        return .success(data)
+        completion(.success(data))
     }
 }
